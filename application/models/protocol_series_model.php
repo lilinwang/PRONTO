@@ -23,7 +23,7 @@ class protocol_series_model extends CI_Model{
 		$params = array();
 		
 		foreach ($category_full as $body) {   			
-			array_push($params,$body);
+			array_push($params,$body.'%');
 		}
 		//var_dump( $params);
         $query = $this->db->query($sql,$params);

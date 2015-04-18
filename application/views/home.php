@@ -82,10 +82,7 @@
 					//$('#import-result').html(response.length);
 					$('#import-result').html("<h3>Imported protocols:</h3></br>");
 					
-					/*for (var i=0;i<response[0].length;i++){							
-						
-							$('#import-result').append("<div class='form-group row'><label class='col-md-3 control-label'>"+response[0][i]+"</label><label class='col-md-3 control-label'>"+response[1][i]+"</label><label class='col-sm-2'>"+response[2][i]+"</label><button class='btn btn-primary btn-sm' onclick='sentNotification(this)'>Send Notification</button></div>");						
-					}*/
+					
 					var status=["new protocol","modified","no change"];
 					for (var i=0;i<response[0].length;i++){							
 						if (response[2][i]!=2){
@@ -97,6 +94,7 @@
 							$('#import-result').append("<div class='form-group row'><label class='col-md-3 control-label'>"+response[0][i]+"</label><label class='col-md-3 control-label'>"+response[1][i]+"</label><label class='col-sm-2'>"+status[response[2][i]]+"</label></div>");
 						}
 					}
+					angular.element(document.getElementById('wholepage')).scope().construct_categories();
                 }
 			});				            			     	
 		}else{
@@ -104,13 +102,13 @@
 			var theDialog = $("#dialog").dialog(opt);					
 			var dialog = theDialog.dialog("open");
 			setTimeout(function() { dialog.dialog("close"); }, 1000);
-		}
+		}				
 	};			
 	
 	</script>
 </head>
 
-<body ng-controller="PanelController as panel">
+<body ng-controller="PanelController as panel" ng-init="panel.construct_categories()" id="wholepage">
 <script>
 
 </script>
@@ -158,7 +156,7 @@
                 <div class="sidebar-nav navbar-collapse">					
                     <ul class="nav" id="side-menu">
 						<li>
-							<h4 class="navbar-brand">protocols</h4>
+							<a href ng-click="panel.selectAllProtocols()" >protocols</a>
 						</li>
                         <li class="sidebar-search">
                             <div class="input-group custom-search-form">
@@ -171,144 +169,14 @@
                             </div>
                             <!-- /input-group -->
                         </li>						
-                        
-                        <li>
-                            <a href ng-click="panel.selectprotocols('CTNeuro')"><i class="fa fa-wrench fa-fw"></i> CTNeuro <span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-								<li> 
-									<a href ng-click="panel.selectprotocols('CTNeuro-Head')" >Head<span class="fa arrow"></span></a>
-									<ul class="nav nav-third-level">
-										<li><a href ng-click="panel.selectprotocols('CTNeuro-Head-Adult')">Adult</a></li>
-										<li><a href ng-click="panel.selectprotocols('CTNeuro-head-peds')">Peds</a></li>
-									</ul>
-								</li>						                               
-                                <li> 
-									<a href ng-click="panel.selectprotocols('CTNeck')">Neck<span class="fa arrow"></span></a>
-									<ul class="nav nav-third-level">
-										<li><a href ng-click="panel.selectprotocols('CTNeuro-neck-Adult')">Adult</a></li>
-										<li><a href ng-click="panel.selectprotocols('CTNeuro-neck-peds')">Peds</a></li>
-									</ul>
-								</li>
-								<li> 
-									<a href ng-click="panel.selectprotocols('CTSpine')">Spine<span class="fa arrow"></span></a>
-									<ul class="nav nav-third-level">
-										<li><a href ng-click="panel.selectprotocols('CTNeuro-spine-Adult')">Adult</a></li>
-										<li><a href ng-click="panel.selectprotocols('CTNeuro-spine-peds')">Peds</a></li>
-									</ul>
-								</li>
-								<li> 
-									<a href ng-click="panel.selectprotocols('CTFace')">Face<span class="fa arrow"></span></a>
-									<ul class="nav nav-third-level">
-										<li><a href ng-click="panel.selectprotocols('CTNeuro-face-Adult')">Adult</a></li>
-										<li><a href ng-click="panel.selectprotocols('CTNeuro-face-peds')">Peds</a></li>
-									</ul>
-								</li>
-                            </ul>                           
-                        </li>
-						<li>
-                            <a href ng-click="panel.selectprotocols('CTMusculoskeletal')"><i class="fa fa-wrench fa-fw"></i> CTMusculoskeletal </span></a>                                    
-                        </li>
-						<li>
-                            <a href ng-click="panel.selectprotocols('CTChestBody')"><i class="fa fa-wrench fa-fw"></i> CTChestBody <span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-								<li><a href ng-click="panel.selectprotocols('CTChestBody-Adult')">Adult</a></li>
-								<li><a href ng-click="panel.selectprotocols('CTChestBody-peds')">Peds</a></li>								
-                            </ul>                           
-                        </li>
-						<li>
-                            <a href ng-click="panel.selectprotocols('CTChest')"><i class="fa fa-wrench fa-fw"></i> CTChest <span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-								<li><a href ng-click="panel.selectprotocols('CTChest-Adult')">Adult</a></li>
-								<li><a href ng-click="panel.selectprotocols('CTChest-peds')">Peds</a></li>								
-                            </ul>                           
-                        </li>
-                       <!-- <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Musculoskeletal CT<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href ng-click="panel.selectprotocols('CT','Ankle')">Ankle</a>
-                                </li>
-                                <li>
-                                    <a href ng-click="panel.selectprotocols('CT','Foot')">Foot</a>
-                                </li>
-                                <li>
-                                    <a href ng-click="panel.selectprotocols('CT','neShoulderck')">Shoulder</a>
-                                </li>
-                                <li>
-                                    <a href ng-click="panel.selectprotocols('CT','Wrist')">Wrist</a>
-                                </li>
-                                <li>
-                                    <a href ng-click="panel.selectprotocols('CT','Hand')">Hand</a>
-                                </li>
-								<li>
-                                    <a href ng-click="panel.selectprotocols('CT','Pelvis')">Pelvis</a>
-                                </li>
-								<li>
-                                    <a href ng-click="panel.selectprotocols('CT','Hip')">Hip</a>
-                                </li>
-								<li>
-                                    <a href ng-click="panel.selectprotocols('CT','Knee')">Knee</a>
-                                </li>
-								<li>
-                                    <a href ng-click="panel.selectprotocols('CT','Variable')">Variable</a>
-                                </li>								
-                            </ul>
-                           
-                        </li>
-						<li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Body CT<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href ng-click="panel.selectprotocols('CT','Abdomen/Pelvis')">Abdomen/Pelvis</a>
-                                </li>
-                                <li>
-                                    <a href ng-click="panel.selectprotocols('CT','Others')">Others</a>
-                                </li>                                	
-                            </ul>
-                           
-                        </li>
-						<li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Cardiac CT<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href ng-click="panel.selectprotocols('CT','Heart')">Heart</a>
-                                </li>                                                          
-                            </ul>
-                        </li>
-						<li>
-                            <a href href ng-click="panel.selectprotocols('MR','')"><i class="fa fa-wrench fa-fw"></i> Body MR</a>                            
-                        </li>
-						<li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Neuro MR<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href ng-click="panel.selectprotocols('MR','Head')">Head</a>
-                                </li>                                                          
-								<li>
-                                    <a href ng-click="panel.selectprotocols('MR','Neck')">Neck</a>
-                                </li> 
-								<li>
-                                    <a href ng-click="panel.selectprotocols('MR','Cervical Spine')"> Cervical Spine</a>
-                                </li>
-                                <li>
-                                    <a href ng-click="panel.selectprotocols('MR','Thoracic Spine')">Thoracic Spine</a>
-                                </li>
-                                <li>
-                                    <a href ng-click="panel.selectprotocols('MR','Lumbar Spine')">Lumbar Spine</a>
-                                </li>
-								<li>
-                                    <a href ng-click="panel.selectprotocols('MR','CTL Spine')">CTL Spine</a>
-                                </li> 
-								<li>
-                                    <a href ng-click="panel.selectprotocols('MR','Variable')">Variable</a>
-                                </li> 
-								<li>
-                                    <a href ng-click="panel.selectprotocols('MR','Others')">Others</a>
-                                </li> 
-                            </ul>
-                            
-                        </li>    
--->						
+						
+                        <li ng-repeat="category in categories" >
+							<a href ng-show="category.level==0" ng-click="panel.selectprotocols(category.name)" ><i class="fa fa-wrench fa-fw"></i> {{category.show_name}}</a>
+							<a href ng-show="category.level==1" ng-click="panel.selectprotocols(category.name)" style="padding-left:60px;">{{category.show_name}}</a>
+							<a href ng-show="category.level==2" ng-click="panel.selectprotocols(category.name)" style="padding-left:80px;">{{category.show_name}}</a>
+							<a href ng-show="category.level==3" ng-click="panel.selectprotocols(category.name)" style="padding-left:100px;">{{category.show_name}}</a>
+						</li>
+              
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
@@ -352,7 +220,7 @@
 								</span>
                                 <span class="input-group-btn">
 									
-                                    <button class="btn btn-default" onclick="upload()" name="submit" type="button" id="upload-icon">
+                                    <button class="btn btn-default"  onclick="upload()" name="submit" type="button" id="upload-icon">
                                         <i class="fa fa-upload"></i>
                                     </button>
                                 </span>
@@ -374,54 +242,28 @@
 				<!-- /.row -->
 				
 				<div class="row">
-                <div class="col-lg-12 export">
-				<p>Neuro CT </p>			
-				<div class="checkbox exportbox">
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Head_Adult"> Head-Adult
+                <div class="col-lg-6 export">
+				<div class="checkbox exportbox" ng-repeat="option in categories">	
+					<div ng-show="option.name[0]=='C'">
+					<label ng-show="option.level==0" >
+						<input type="checkbox" ng-model="option.checked"> 
+						{{option.show_name}}
+					</label>									
+					<label ng-show="option.level==1" style="padding-left:60px;">
+						<input type="checkbox" ng-model="option.checked"> 
+						{{option.show_name}}
 					</label>
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Head_Peds"> Head-Peds
+					<label ng-show="option.level==2" style="padding-left:100px;">
+						<input type="checkbox" ng-model="option.checked"> 
+						{{option.show_name}}
 					</label>
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Neck_Adult"> Neck-Adult
+					<label ng-show="option.level==3" style="padding-left:140px;">
+						<input type="checkbox" ng-model="option.checked"> 
+						{{option.show_name}}
 					</label>
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Neck_Peds"> Neck-Peds
-					</label>
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Spine_Adult"> Spine-Adult
-					</label>
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Spine_Peds"> Spine-Peds
-					</label>
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Face_Adult"> Face-Adult
-					</label>
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Face_Peds"> Face-Peds
-					</label>
-				</div>	
-				<p>Musculoskeletal CT <input type="checkbox" ng-model="export_ct_options.CTMusculoskeletal"></p>			
+					</div>
+				</div>
 				
-				<p>ChestBody CT </p>			
-				<div class="checkbox exportbox">
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.CTChestbody_Adult"> Adult
-					</label>
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.CTChestbody_Peds"> Peds
-					</label>					
-				</div>	
-				<p> Chest CT </p>			
-				<div class="checkbox exportbox">
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.CTChest_Adult"> Adult
-					</label>
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.CTChest_Peds"> Peds
-					</label>						
-				</div>	
 				<div id='export-result'></div>
 				<button class="btn btn-default" type="button" ng-click="export_data('CT')">
 					Export CT
@@ -433,128 +275,44 @@
 					Uncheck all CT
 				</button>	
 				</div>
-				</div>				
-				<!--
-				<p>Neuro CT </p>			
-				<div class="checkbox exportbox">
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.head"> Head
+				
+				
+				<div class="col-lg-6 export">
+				<div class="checkbox exportbox" ng-repeat="option in categories">	
+					<div ng-show="option.name[0]=='M'">
+					<label ng-show="option.level==0" >
+						<input type="checkbox" ng-model="option.checked"> 
+						{{option.show_name}}
+					</label>									
+					<label ng-show="option.level==1" style="padding-left:60px;">
+						<input type="checkbox" ng-model="option.checked"> 
+						{{option.show_name}}
 					</label>
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.neck"> Neck
+					<label ng-show="option.level==2" style="padding-left:100px;">
+						<input type="checkbox" ng-model="option.checked"> 
+						{{option.show_name}}
 					</label>
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.cervical_spine"> Cervical Spine
+					<label ng-show="option.level==3" style="padding-left:140px;">
+						<input type="checkbox" ng-model="option.checked"> 
+						{{option.show_name}}
 					</label>
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.thoracic_spine"> Thoracic Spine
-					</label>
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.lumbar_spine"> Lumbar Spine
-					</label>
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.lumbar_spine_cord"> Lumbar Spine Cord
-					</label>
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.brachial_plexus"> Brachial Plexus
-					</label>
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.facial_bones"> Facial Bones
-					</label>
-				</div>	
-				<p>Musculoskeletal CT </p>			
-				<div class="checkbox exportbox">
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.ankle"> Ankle
-					</label>
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.foot"> Foot
-					</label>
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.shoulder"> Shoulder
-					</label>
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.wrist"> Wrist
-					</label>
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.hand"> Hand
-					</label>
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.pelvis"> Pelvis
-					</label>
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.hip"> Hip
-					</label>
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.knee"> Knee
-					</label>
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.variable"> Variable
-					</label>
-				</div>	
-				<p>Body CT </p>			
-				<div class="checkbox exportbox">
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.abdomen_pelvis"> Abdomen/Pelvis
-					</label>
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.others"> Others
-					</label>					
-				</div>	
-				<p>Cardiac CT </p>			
-				<div class="checkbox exportbox">
-					<label>
-						<input type="checkbox" ng-model="export_ct_options.heart"> Heart
-					</label>					
-				</div>	
-				<div id='export-result'></div>
-				<button class="btn btn-default" type="button" ng-click="export_data('CT')">
-					Export CT
-				</button>	
+					</div>
 				</div>
-				</div>				
-				
-				<div class="row">
-                <div class="col-lg-12 export">				
-				<p>Body MR </p>			
-				
-				<p>Neuro MR </p>			
-				<div class="checkbox exportbox">
-					<label>
-						<input type="checkbox" ng-model="export_mr_options.head"> Head
-					</label>
-					<label>
-						<input type="checkbox" ng-model="export_mr_options.neck"> Neck
-					</label>
-					<label>
-						<input type="checkbox" ng-model="export_mr_options.cervical_spine"> Cervical Spine
-					</label>
-					<label>
-						<input type="checkbox" ng-model="export_mr_options.thoracic_spine"> Thoracic Spine
-					</label>
-					<label>
-						<input type="checkbox" ng-model="export_mr_options.lumbar_spine"> Lumbar Spine
-					</label>
-					<label>
-						<input type="checkbox" ng-model="export_mr_options.ctl_spine"> CTL Spine
-					</label>
-					<label>
-						<input type="checkbox" ng-model="export_mr_options.variable"> Variable
-					</label>
-					<label>
-						<input type="checkbox" ng-model="export_mr_options.others"> Others
-					</label>
-				</div>	
-			
 				<div id='export-result'></div>
 				<button class="btn btn-default" type="button" ng-click="export_data('MR')">
 					Export MR
+				</button>
+				<button class="btn btn-default" type="button" ng-click="check_all('MR',true)">
+					Check all MR
 				</button>	
-				</div>				
+				<button class="btn btn-default" type="button" ng-click="check_all('MR',false)">
+					Uncheck all MR
+				</button>	
 				</div>
--->				
+				</div>
 			</div>
 			
+				
 			
 			<div ng-show="panel.isSelected('Protocols')">				 
 			<div class="row">
@@ -568,23 +326,9 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            DataTables Advanced Tables
+                            Selected protocols
                         </div>
-						<div class="form-group row" style="margin-top:15px;margin-left:15px;margin-bottom:-15px;">							
-							<div >
-								<div class="form-group row col-md-10" style="float:right;">
-									<label class="col-md-1 control-label">Search:</label>
-									<div class="col-md-3">
-										<input ng-model="q" type="text" class="form-control" placeholder="Filter text">
-									</div>
-									
-									<label class="col-md-2 control-label" >items per page:</label>
-									<div class="col-md-2">
-										<input type="number" min="1" max="100" type="text" class="form-control" ng-model="pageSize">
-									</div>
-								</div>
-							</div>
-						</div>
+						
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="table-responsive">
@@ -593,26 +337,23 @@
                                         <tr>											
                                             <th>protocol Name</th>
 											<th>protocol Category</th>
-											<th>Indication</th>																															
+											<th>Indication</th>		
+											<th>Permalink</th>
 										</tr>
                                     </thead>
                                     <tbody>										 																			
-                                        <tr class="odd gradeX" ng-repeat="protocol in protocols" ng-click="panel.showDetailedProtocol(protocol.protocol_number,protocol.protocol_category)" style="cursor: pointer">											
-                                            <td>{{protocol.protocol_name}}</td>
-											<td>{{protocol.protocol_category}}</td>                                            											
-											<td>{{protocol.indication}}</td>
-                                                                                								
+                                        <tr class="odd gradeX" ng-repeat="protocol in protocols" >											
+                                            <td ng-click="panel.showDetailedProtocol(protocol.protocol_number,protocol.protocol_category)" style="cursor: pointer">{{protocol.protocol_name}}</td>
+											<td ng-click="panel.showDetailedProtocol(protocol.protocol_number,protocol.protocol_category)" style="cursor: pointer">{{protocol.protocol_category}}</td>                                            											
+											<td ng-click="panel.showDetailedProtocol(protocol.protocol_number,protocol.protocol_category)" style="cursor: pointer">{{protocol.indication}}</td>
+                                            <td><a target="_blank" href="mylist?protocolID={{protocol.protocol_number}}&Category={{protocol.protocol_category}}"><?php echo base_url();?>mylist?protocolID={{protocol.protocol_number}}&Category={{protocol.protocol_category}}</a></td>                          								
                                         </tr>                                       
                                     </tbody>
                                 </table>
                             </div>
                             <!-- /.table-responsive -->  							
                         </div>
-						<div ng-controller="OtherController" >         
-							<div class="text-center">
-								<dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="dirPagination.tpl.html"></dir-pagination-controls>
-							</div>
-						</div>
+						
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
@@ -637,21 +378,7 @@
                         <div class="panel-heading">
                             Protocol
                         </div>
-						<div class="form-group row" style="margin-top:15px;margin-left:15px;margin-bottom:-15px;">							
-							<div >
-								<div class="form-group row col-md-10" style="float:right;">
-									<label class="col-md-1 control-label">Search:</label>
-									<div class="col-md-3">
-										<input ng-model="q" type="text" class="form-control" placeholder="Filter text">
-									</div>
-									
-									<label class="col-md-2 control-label" >items per page:</label>
-									<div class="col-md-2">
-										<input type="number" min="1" max="100" type="text" class="form-control" ng-model="pageSize">
-									</div>
-								</div>
-							</div>
-						</div>
+						
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="table-responsive">
@@ -674,11 +401,7 @@
 								</div>
                             <!-- /.table-responsive -->                           
                         </div>
-						<div ng-controller="OtherController" >         
-							<div class="text-center">
-								<dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="dirPagination.tpl.html"></dir-pagination-controls>
-							</div>
-						</div>
+						
                         <!-- /.panel-body -->
                     </div>
                     

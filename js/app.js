@@ -13,7 +13,7 @@
 			console.log('meals page changed to ' + num);
 		};
 		//var pdata=this;
-		$scope.all_series_button="Show All Series";
+		$scope.all_series_button="Hide All Series";
 		$scope.all_history_button="Show All History";
 		$scope.search_key="";
 		$scope.protocols=[];
@@ -28,140 +28,92 @@
 		];
 		$scope.records=[];
 		$scope.history_start="";
-		$scope.history_end="";
-		
-		$scope.export_ct_options={			
-			CTChest_Adult:false,
-			CTChest_Peds:false,
-			CTBody_Adult:false,
-			CTBody_Peds:false,
-			CTChestbody_Adult:false,
-			CTChestbody_Peds:false,
-			CTMusculoskeletal:false,
-			CTNeuro_Head_Adult:false,
-			CTNeuro_Head_Peds:false,
-			CTNeuro_Face_Adult:false,
-			CTNeuro_Face_Peds:false,
-			CTNeuro_Neck_Adult:false,
-			CTNeuro_Neck_Peds:false,
-			CTNeuro_Spine_Adult:false,
-			CTNeuro_Spine_Peds:false
-		};
-		$scope.export_mr_options={			
-			head:false,
-			neck:false,		
-			cervical_spine:false,
-			thoracic_spine:false,			
-			lumbar_spine:false,
-			ctl_cord:false,			
-			variable:false,			
-			others:false
-		};
-		$scope.menus={
-			1:{
-				name:'CTNeuro',
-				second_menus:{
-					1:{
-						name:'Head',
-						third_menus:{
-							1:{
-								name:'Adult'								
-							},
-							2:{
-								name:'Peds'								
-							}
-						}
-					},
-					2:{
-						name:'Neck',
-						third_menus:{
-							1:{
-								name:'Adult'								
-							},
-							2:{
-								name:'Peds'								
-							}
-						}
-					},
-					3:{
-						name:'Spine',
-						third_menus:{
-							1:{
-								name:'Adult'								
-							},
-							2:{
-								name:'Peds'								
-							}
-						}
-					},
-					4:{
-						name:'Face',
-						third_menus:{
-							1:{
-								name:'Adult'								
-							},
-							2:{
-								name:'Peds'								
-							}
-						}
-					}
-				}
-			},
-			2:{
-				name:'CTMusculoskeletal'				
-			},
-			3:{
-				name:'CTChestBody',
-				second_menus:{
-					1:{
-						name:'Adult'								
-					},
-					2:{
-						name:'Peds'								
-					}
-				}
-			},
-			4:{
-				name:'CTChest',
-				second_menus:{
-					1:{
-						name:'Adult'								
-					},
-					2:{
-						name:'Peds'								
-					}
-				}
-			}
-		}
+		$scope.history_end="";			
+				
 		$scope.export_protocols=[];	
+		$scope.categories=[];
+		
+		$scope.construct_categories=function(){
+			//console.log("WLL");
+			$http({
+				url: 'ajax/get_category',
+				method: "POST",
+				data : {}
+			}).success(function (data) {
+				//console.log(data);
+				if (angular.isObject(data)){					
+					$scope.categories=data.slice(0);
+					angular.forEach($scope.categories,function(option){						
+						option.checked=false;						
+					});	
+				}
+				else{
+					$scope.categories=[];
+				}
+				
+			}).error(function (data) {
+				console.log(data);				
+			});
+		};
+		this.construct_categories=function(){
+			
+			$http({
+				url: 'ajax/get_category',
+				method: "POST",
+				data : {}
+			}).success(function (data) {
+				//console.log(data);
+				if (angular.isObject(data)){					
+					$scope.categories=data.slice(0);
+					angular.forEach($scope.categories,function(option){						
+						option.checked=false;						
+					});	
+					//console.log($scope.categories);
+				}
+				else{
+					//console.log(data);
+					$scope.categories=[];
+				}
+				
+			}).error(function (data) {
+				console.log(data);				
+			});
+		};
+		
 		$scope.check_all=function(modal,status){
 			if (modal=='MR'){
-				angular.forEach($scope.export_mr_options,function(value,key){
-					$scope.export_mr_options[key]=status;
+				angular.forEach($scope.categories,function(option){
+					if (option.name[0]=='M'){					
+						option.checked=status;					
+					}
 				});	
 			}else{
-				angular.forEach($scope.export_ct_options,function(value,key){
-					$scope.export_ct_options[key]=status;
-				});
+				angular.forEach($scope.categories,function(option){
+					if (option.name[0]=='C'){					
+						option.checked=status;					
+					}
+				});	
 			}
 		};
 		$scope.export_data=function(modal){
 			var category=[];
 			$scope.export_protocols=[];	
+			
 			if (modal=="MR"){
-				angular.forEach($scope.export_mr_options,function(value,key){
-					if (value){					
-						category.push(key);	
+				angular.forEach($scope.categories,function(option){
+					if (option.name[0]=='M' && option.checked==true){					
+						category.push(option.name);	
 					}
 				});	
 			}else{
-				angular.forEach($scope.export_ct_options,function(value,key){
-					if (value){					
-						category.push(key);	
+				//console.log($scope.categories);
+				angular.forEach($scope.categories,function(option){
+					if (option.name[0]=='C' && option.checked==true){					
+						category.push(option.name);							
 					}
-				});			
+				});				
 			}
-			//console.log(category);
+			
 			if (category.length<1){
 				$("#dialog").html("<p>No data selected.</p>");
 				var theDialog = $("#dialog").dialog(opt);					
@@ -175,30 +127,15 @@
 				data : {modality:modal,category_full:category}
 			}).success(function (data) {
 				console.log(data);
-				/*var one_protocol=[];				
-				var len=$scope.series.length;
-				for (var i=0;i<len;i++){				
-					var tmp={};				
-					angular.extend(tmp, $scope.protocols[0],$scope.series[i], true);
-					delete tmp['id'];
-					delete tmp['show'];
-					one_protocol.push(tmp);
-				}*/								
-				
-				if (modal=="MR"){
-					for (var i=0;i<category.length;i++){
-						$scope.export_mr_options[category[i]]=false;
-					}								
-				}else{
-					for (var i=0;i<category.length;i++){
-						$scope.export_ct_options[category[i]]=false;
-					}	
-				}
+									
+				angular.forEach($scope.categories,function(option){
+					option.checked=false;
+				});					
 			
 				if (angular.isObject(data)){										
 					$scope.export_protocols=data.slice(0);						
 					for (var i=0;i<$scope.export_protocols.length;i++){
-						delete $scope.export_protocols[i]['id'];
+						delete $scope.export_protocols[i]['id'];					
 					}
 					alasql('SELECT * INTO CSV("export_protocols.csv",{headers:true}) FROM ?',[$scope.export_protocols]);
 					
@@ -223,6 +160,27 @@
 				data : {category:category_data}
 			}).success(function (data) {
 				//console.log(data);
+				if (angular.isObject(data)){					
+					$scope.protocols=data.slice(0);
+				}
+				else{
+					//console.log(data);
+					$scope.protocols=[];
+				}
+				//console.log($scope.protocols[0]);
+				//$scope.users = data;
+			}).error(function (data) {
+				console.log(data);				
+			});
+		};
+		this.selectAllProtocols=function(){			
+			this.select('Protocols');		
+			$http({
+				url: 'ajax/get_all_protocols',
+				method: "POST",
+				data : {}
+			}).success(function (data) {
+				console.log(data);
 				if (angular.isObject(data)){					
 					$scope.protocols=data.slice(0);
 				}
@@ -302,7 +260,7 @@
 			this.tab='DetailedProtocol';	
 			$scope.detail_protocol=protocol_number;
 			$scope.detail_protocol_category=protocol_category;
-			$scope.all_series_button="Show All Series";
+			$scope.all_series_button="Hide All Series";
 			
 			$http({
 				url: 'detailed_ajax/get_protocol',
@@ -332,7 +290,7 @@
 					$scope.series=data.slice(0);
 					//console.log($scope.series);
 					for (i = 0; i < $scope.series.length; i++) { 
-						$scope.series[i].show=false;
+						$scope.series[i].show=true;
 					}
 					//console.log($scope.series);
 				}

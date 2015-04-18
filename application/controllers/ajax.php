@@ -63,6 +63,11 @@ class Ajax extends CI_Controller {
 		echo json_encode($result);			
 	}
 	*/
+	function get_category(){
+		$this->load->model('category_model');				
+		$result= $this->category_model->get_all_list();
+		echo json_encode($result);
+	}
 	function get_record(){
 		$data = json_decode(file_get_contents("php://input"));
 		
@@ -89,6 +94,12 @@ class Ajax extends CI_Controller {
 		$result= $this->protocol_model->get_list_by_category($category);		
 		
 			
+		echo json_encode($result);				
+	}
+	function get_all_protocols(){	
+		$this->load->model('protocol_model');				
+		$result= $this->protocol_model->get_all_protocols($category);		
+		
 		echo json_encode($result);				
 	}
 	function export_protocol(){
@@ -128,6 +139,7 @@ class Ajax extends CI_Controller {
         $file_path = $dest;
 		
 		$this->load->model('protocol_model');
+		$this->load->model('category_model');
 		
         if ($this->csvimport->get_array($file_path)) {
 			$csv_array = $this->csvimport->get_array($file_path);
@@ -144,6 +156,7 @@ class Ajax extends CI_Controller {
 				if ($row['Protocol ID']==NULL) break;	
 				
 				$protocol_status=$this->protocol_model->insert_new($protocol_data,$row['Protocol ID'],$user_name);
+				$this->category_model->check($row['Protocol Category']);
 				array_push($imported_protocols[0], $row['Protocol ID']);   
 				array_push($imported_protocols[1], $row['Protocol Name']);				
 				

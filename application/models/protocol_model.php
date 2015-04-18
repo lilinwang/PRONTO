@@ -14,9 +14,22 @@ class protocol_model extends CI_Model{
 	
 	function get_list_by_category($category)
 	{
-		$sql = "SELECT * FROM protocol WHERE protocol_category LIKE ?";
+		$sql = "SELECT * FROM protocol WHERE protocol_category LIKE ? ORDER BY protocol_name";
 		$params = array('%'.$category.'%');
         $query = $this->db->query($sql, $params);
+        if ($query->num_rows() > 0) {
+			$result=$query->result_array();
+			return $result;            
+        }
+        else {
+            return null;
+        }
+	}
+	function get_all_protocols()
+	{
+		$sql = "SELECT * FROM protocol ORDER BY protocol_name";
+		
+        $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
 			$result=$query->result_array();
 			return $result;            
@@ -31,7 +44,7 @@ class protocol_model extends CI_Model{
 		$ids = implode(" +",$content); 
 		
 		//echo $ids;
-		$sql="SELECT * FROM `protocol` WHERE MATCH (`protocol_name`, `indication`,`protocol_category`) AGAINST('+".$ids."' IN BOOLEAN MODE) ;";
+		$sql="SELECT * FROM `protocol` WHERE MATCH (`protocol_name`, `indication`,`protocol_category`) AGAINST('+".$ids."' IN BOOLEAN MODE) ORDER BY protocol_name;";
 		//echo $sql;
 		//$sql = "SELECT * FROM protocol WHERE bodypart_full IN ('".$ids."')";
 		//$params = array($ids);
