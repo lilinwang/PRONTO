@@ -6,7 +6,7 @@ class series_ct_model extends CI_Model{
 	}	
 	
 	function insert_new($data,$id){
-		$sql = 'SELECT * FROM series_ct WHERE series_name=?';
+		$sql = 'SELECT * FROM series_ct WHERE `Series`=?';
 		$params = array($id);
 		$status = 0;//0: new protocol; 1: modified; 2:no change
 		
@@ -25,7 +25,7 @@ class series_ct_model extends CI_Model{
 			}
 			if ($status==1){				   
 				$this->db->insert('series_ct_backup',$query->result_array()[0]);
-				$this->db->where('series_name', $id);
+				$this->db->where('Series', $id);
 				$this->db->update('series_ct', $data);        
 			}
         }
@@ -37,7 +37,7 @@ class series_ct_model extends CI_Model{
 	}	
 	
 	function get_list_by_number($protocol_number){
-		$sql = 'SELECT * FROM series_ct WHERE protocol_number=?';
+		$sql = 'SELECT * FROM series_ct WHERE `Protocol ID`=?';
 		$params = array($protocol_number);
 		
         $query = $this->db->query($sql, $params);
@@ -50,7 +50,7 @@ class series_ct_model extends CI_Model{
         }
 	}	
 	function delete_by_number($protocol_number){
-		$sql = 'DELETE FROM series_ct WHERE protocol_number=?';
+		$sql = 'DELETE FROM series_ct WHERE `Protocol ID`=?';
 		$params = array($protocol_number);
 		
         $query = $this->db->query($sql, $params);

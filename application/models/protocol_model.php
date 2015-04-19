@@ -5,7 +5,7 @@ class protocol_model extends CI_Model{
 		parent::__construct();
 	}
 	private function record($protocol_number,$protocol_name,$user_name,$status){
-		$sql='INSERT INTO record (`protocol_number`, `protocol_name`, `created_by`, `status`) VALUES (?,?,?,?);';
+		$sql='INSERT INTO record (`Protocol ID`, `Protocol Name`, `created_by`, `status`) VALUES (?,?,?,?);';
 		//0: new protocol; 1: modified; 2:no change
 		$new_status=["New protocol","Modified","No change","Deleted"];
 		$params = array($protocol_number,$protocol_name,$user_name,$new_status[$status]);
@@ -14,7 +14,7 @@ class protocol_model extends CI_Model{
 	
 	function get_list_by_category($category)
 	{
-		$sql = "SELECT * FROM protocol WHERE protocol_category LIKE ? ORDER BY protocol_name";
+		$sql = "SELECT * FROM protocol WHERE `Protocol Category` LIKE ? ORDER BY `Protocol Name`";
 		$params = array('%'.$category.'%');
         $query = $this->db->query($sql, $params);
         if ($query->num_rows() > 0) {
@@ -27,7 +27,7 @@ class protocol_model extends CI_Model{
 	}
 	function get_all_protocols()
 	{
-		$sql = "SELECT * FROM protocol ORDER BY protocol_name";
+		$sql = "SELECT * FROM protocol ORDER BY `Protocol Name`";
 		
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
@@ -44,7 +44,7 @@ class protocol_model extends CI_Model{
 		$ids = implode(" +",$content); 
 		
 		//echo $ids;
-		$sql="SELECT * FROM `protocol` WHERE MATCH (`protocol_name`, `indication`,`protocol_category`) AGAINST('+".$ids."' IN BOOLEAN MODE) ORDER BY protocol_name;";
+		$sql="SELECT * FROM `protocol` WHERE MATCH (`Protocol Name`, `Indications`,`Protocol Category`) AGAINST('+".$ids."' IN BOOLEAN MODE) ORDER BY `Protocol Name`;";
 		//echo $sql;
 		//$sql = "SELECT * FROM protocol WHERE bodypart_full IN ('".$ids."')";
 		//$params = array($ids);
@@ -60,7 +60,7 @@ class protocol_model extends CI_Model{
 	}	
 	
 	function get_by_number($protocol_number){
-		$sql = 'SELECT * FROM protocol WHERE protocol_number like ?';
+		$sql = 'SELECT * FROM protocol WHERE `Protocol ID` like ?';
 		$params = array($protocol_number);
 		
         $query = $this->db->query($sql, $params);
@@ -73,7 +73,7 @@ class protocol_model extends CI_Model{
         }
 	}
 	function get_report_description_by_name($name){
-		$sql = 'SELECT report,description FROM protocol WHERE protocol_name like ?';
+		$sql = 'SELECT `Report Template` FROM protocol WHERE `Protocol Name` like ?';
 		$params = array($name);
 		
         $query = $this->db->query($sql, $params);
@@ -86,7 +86,7 @@ class protocol_model extends CI_Model{
         }
 	}
 	function get_report_description_by_number($number){
-		$sql = 'SELECT report,description FROM protocol WHERE protocol_number like ?';
+		$sql = 'SELECT report,description FROM protocol WHERE `Protocol ID` like ?';
 		$params = array($number);
 		
         $query = $this->db->query($sql, $params);
@@ -99,7 +99,7 @@ class protocol_model extends CI_Model{
         }
 	}
 	function insert_new($data,$id,$user_name){
-		$sql = 'SELECT * FROM protocol WHERE protocol_number=?';
+		$sql = 'SELECT * FROM protocol WHERE `Protocol ID`=?';
 		$params = array($id);
 		$status = 0;//0: new protocol; 1: modified; 2:no change; 3:delete
         $query = $this->db->query($sql, $params);
@@ -118,7 +118,7 @@ class protocol_model extends CI_Model{
 			
 			if ($status==1){				
 				$this->db->insert('protocol_backup',$query->result_array()[0]);
-				$this->db->where('protocol_number', $id);
+				$this->db->where('Protocol ID', $id);
 				$this->db->update('protocol', $data);  
 			}					
         }
@@ -127,20 +127,20 @@ class protocol_model extends CI_Model{
 			
         }		
 		
-		$this->record($id,$data['protocol_name'],$user_name,$status);
+		$this->record($id,$data['Protocol Name'],$user_name,$status);
 		return $status;
 	}	
 	
 	function delete_by_number($protocol_number,$user_name){
-		$sql = 'SELECT * FROM protocol WHERE protocol_number=?';
+		$sql = 'SELECT * FROM protocol WHERE `Protocol ID`=?';
 		$params = array($protocol_number);
 		$query = $this->db->query($sql, $params);
         if ($query->num_rows() > 0) {
 			$this->db->insert('protocol_backup',$query->result_array()[0]);//backup
-			$this->record($protocol_number,$query->result_array()[0]['protocol_name'],$user_name,3);//record
+			$this->record($protocol_number,$query->result_array()[0]['Protocol Name'],$user_name,3);//record
 		}
 		
-		$sql = 'DELETE FROM protocol WHERE protocol_number=?';
+		$sql = 'DELETE FROM protocol WHERE `Protocol ID`=?';
 		$params = array($protocol_number);
 		
         $query = $this->db->query($sql, $params);

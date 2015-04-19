@@ -159,7 +159,7 @@
 				method: "POST",
 				data : {category:category_data}
 			}).success(function (data) {
-				//console.log(data);
+				console.log(data);
 				if (angular.isObject(data)){					
 					$scope.protocols=data.slice(0);
 				}

@@ -8,15 +8,15 @@ class protocol_series_model extends CI_Model{
 	{		
 		$sql;
 		if ($modality=="MR"){
-			$sql = 'SELECT * FROM protocol as p inner join series_mr as s on p.protocol_number=s.protocol_number WHERE (protocol_category LIKE ? ';
+			$sql = 'SELECT * FROM protocol as p inner join series_mr as s on p.`Protocol ID`=s.`Protocol ID` WHERE (`Protocol Category` LIKE ? ';
 		}else{
-			$sql = 'SELECT * FROM protocol as p inner join series_ct as s on p.protocol_number=s.protocol_number WHERE (protocol_category LIKE ? ';
+			$sql = 'SELECT * FROM protocol as p inner join series_ct as s on p.`Protocol ID`=s.`Protocol ID` WHERE (`Protocol Category` LIKE ? ';
 		}
 		
 		$count = count($category_full);	
 		
 		for ($i = 1; $i < $count; $i++) {   
-			$sql=$sql."OR protocol_category LIKE ? ";
+			$sql=$sql."OR `Protocol Category` LIKE ? ";
 		}
 		$sql=$sql.")";
 		
