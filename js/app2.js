@@ -16,7 +16,7 @@
 		$scope.protocol_number = $location.search()['protocolID'];
 		$scope.protocol_number_category=$location.search()['Category'];
 		$scope.series=[];
-		
+		$scope.detail_protocol_category="";
 		this.showAllSeries=function(){
 			if ($scope.all_series_button=="Show All Series"){
 				$scope.all_series_button="Hide All Series";
@@ -33,10 +33,11 @@
 		this.showSeries=function(serie){
 			serie.show=!serie.show;
 		}
-		
-		this.showDetailedProtocol=function(protocol_number){	
-			console.log($location);
-			console.log($scope.protocol_number);
+		this.showDetailedProtocol=function(protocol_number,protocol_category){
+			//console.log(protocol_number);
+			this.tab='DetailedProtocol';	
+			$scope.detail_protocol=protocol_number;
+			$scope.detail_protocol_category=protocol_category;
 			$scope.all_series_button="Hide All Series";
 			
 			$http({
@@ -56,11 +57,11 @@
 				function (data) {
 				console.log(data);				
 			});				
-			
+			console.log(protocol_category);
 			$http({
 				url: 'detailed_ajax/get_series',
 				method: "POST",
-				data : {number:protocol_number,category:'CT'}
+				data : {number:protocol_number,category:protocol_category}
 			}).success(function (data) {
 				console.log(data);
 				if (angular.isObject(data)){					
@@ -80,6 +81,7 @@
 				console.log(data);				
 			});	
 		};
+			
 	}]);		
 	
 	var base_url="radiology";

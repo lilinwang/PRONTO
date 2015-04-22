@@ -98,7 +98,7 @@ class Ajax extends CI_Controller {
 	}
 	function get_all_protocols(){	
 		$this->load->model('protocol_model');				
-		$result= $this->protocol_model->get_all_protocols($category);		
+		$result= $this->protocol_model->get_all_protocols();		
 		
 		echo json_encode($result);				
 	}
@@ -146,12 +146,12 @@ class Ajax extends CI_Controller {
 			$imported_protocols=array(array(),array(),array());
 			//$imported_status=array();
 			foreach ($csv_array as $row) {	
-				$protocol_data = array(
-                        'Protocol Name'=>$row['Protocol Name'],
-                        'Protocol ID'=>$row['Protocol ID'],
-						'Protocol Category'=>$row['Protocol Category'],
-                        'Indications'=>$row['Indications'],
-						'Report Template'=>$row['Report Template']
+				$protocol_data = array(                        
+                        "Protocol ID"=>$row['Protocol ID'],
+						"Protocol Name"=>$row['Protocol Name'],
+						'Protocol Category'=>$row['Protocol Category'],                        
+						'Report Template'=>$row['Report Template'],
+						'Indications'=>$row['Indications']
                 );					
 				if ($row['Protocol ID']==NULL) break;	
 				
@@ -165,17 +165,22 @@ class Ajax extends CI_Controller {
 					$series_data = array(
                         'Series'=>$row['Series'],                        
                         'Pulse Sequence'=>$row['Pulse Sequence'],
-                        'plane'=>$row['Plane'],
-                        'imaging_mode'=>$row['Imaging Mode'],
-						'sequence_description'=>$row['Sequence Description'],
-						'fov'=>$row['FOV'],
-                        'matrix_15t'=>$row['MATRIX (1.5T)'],
-                        'matrix_3t'=>$row['MATRIX (3T)'],
-                        'thk_space'=>$row['THK/SPACE'],
-						'time'=>$row['Time'],                        
-						'protocol_number'=>$row['Protocol ID']
+                        'Plane'=>$row['Plane'],
+                        'Imaging Mode'=>$row['Imaging Mode'],
+						'Sequence Description'=>$row['Sequence Description'],
+						'Localization'=>$row['Localization'],
+						'FOV'=>$row['FOV'],
+                        'MATRIX (1.5T)'=>$row['MATRIX (1.5T)'],
+                        'MATRIX (3T)'=>$row['MATRIX (3T)'],
+						'NEX'=>$row['NEX'],
+						'Bandwidth'=>$row['Bandwidth'],
+                        'THK/SPACE'=>$row['THK/SPACE'],
+						'Sequence options'=>$row['Sequence options'],
+						'Injection options'=>$row['Injection options'],
+						'Time'=>$row['Time'],                        
+						'Protocol ID'=>$row['Protocol ID']
                     );
-                    $series_status=$this->series_mr_model->insert_new($series_data,$row['Series']);
+                    $series_status=$this->series_mr_model->insert_new($series_data,$row['Series'],$row['Protocol ID']);
 				}else{
 					$series_data = array(
 						'Series'=>$row['Series'],                        
@@ -206,7 +211,7 @@ class Ajax extends CI_Controller {
 						'CTDI'=>$row['CTDI'],
 						'Protocol ID'=>$row['Protocol ID']
                     );
-                    $series_status=$this->series_ct_model->insert_new($series_data,$row['Series']);
+                    $series_status=$this->series_ct_model->insert_new($series_data,$row['Series'],$row['Protocol ID']);
 					
 				}	
 				//0: new protocol; 1: modified; 2:no change

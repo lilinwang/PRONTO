@@ -111,7 +111,7 @@
 	
 </head>
 
-<body ng-controller="PanelController as panel" ng-init="panel.showDetailedProtocol(protocol_number)">
+<body ng-controller="PanelController as panel" ng-init="panel.showDetailedProtocol(protocol_number,protocol_number_category)">
     <div id="wrapper">
 
        
@@ -148,9 +148,9 @@
                                     </thead>
                                     <tbody>										 																			
                                         <tr class="odd gradeX" ng-repeat="protocol in protocols">										
-											<td>{{protocol.protocol_name}}</td>
-											<td>{{protocol.protocol_category}}</td>                                            											
-											<td>{{protocol.indication}}</td>                                          									 
+											<td>{{protocol['Protocol Name']}}</td>
+											<td>{{protocol['Protocol Category']}}</td>                                            											
+											<td>{{protocol['Indications']}}</td>                                          									 
                                         </tr>                                       
                                     </tbody>
                                 </table>
@@ -170,70 +170,81 @@
 						<p>
 							<ul class="nav" >                                                                                            									 
 								<li ng-repeat="serie in series">
-									<a style="font-size:18px" ng-click="panel.showSeries(serie)"> {{serie.series_name}}<span class="fa arrow"></span></a>									
-									<ul class="nav series" ng-show="serie.show && protocol_number_category[0]=='C'" >																				                                                                                                                                                                                                                                                                    
-										<li><h4>Patient Orientation</h4>{{serie.patient_orientation}}</li>																				
+									<a style="font-size:18px" ng-click="panel.showSeries(serie)"> {{serie['Series']}}<span class="fa arrow"></span></a>									
+									<ul class="nav series" ng-show="serie.show && detail_protocol_category[0]=='C'" >																				                                                                                                                                                                                                                                                                    
+										<li><h4>Patient Orientation</h4>{{serie['Patient Orientation']}}</li>																				
                                         										
-										<li><h4>Intravenous Contrast</h4>{{serie.intravenous_contrast}}</li>
-										<li><h4>Oral Contrast</h4>{{serie.oral_contrast}}</li>	
-										<li><h4>Scout</h4>{{serie.scout}}</li>
+										<li><h4>Intravenous Contrast</h4>{{serie['Intravenous Contrast']}}</li>
+										<li><h4>Oral Contrast</h4>{{serie['Oral Contrast']}}</li>	
+										<li><h4>Scout</h4>{{serie['Scout']}}</li>
 										
-										<li><h4>Scanning Mode</h4>{{serie.scanning_mode}}</li>
+										<li><h4>Scanning Mode</h4>{{serie['Scanning Mode']}}</li>
 										
-										<li><h4>Range/Direction</h4>{{serie.range_direction}}</li>
+										<li><h4>Range/Direction</h4>{{serie['Range/Direction']}}</li>
 										
-										<li><h4>Gantry Angle</h4>{{serie.gantry_angle}}</li>
+										<li><h4>Gantry Angle</h4>{{serie['Gantry Angle']}}</li>
 										
-										<li><h4>Algorithm</h4>{{serie.algorithm}}</li>
+										<li><h4>Algorithm</h4>{{serie['Algorithm']}}</li>
 										
-										<li><h4>Beam Collimation / Detector Configuration</h4>{{serie.beam_collimation_detector_configuration}}</li>    
+										<li><h4>Beam Collimation / Detector Configuration</h4>{{serie['Beam Collimation / Detector Configuration']}}</li>    
 										
-										<li><h4>Slice Thickness</h4>{{serie.slice_thickness}}</li>
+										<li><h4>Slice Thickness</h4>{{serie['Slice Thickness']}}</li>
 										
-										<li><h4>Interval</h4>{{serie.interval}}</li>
+										<li><h4>Interval</h4>{{serie['Interval']}}</li>
 										
-										<li><h4>Table Speed (mm/rotation)</h4>{{serie.table_speed}}</li>
+										<li><h4>Table Speed (mm/rotation)</h4>{{serie['Table Speed (mm/rotation)']}}</li>
 										
-										<li><h4>Pitch</h4>{{serie.pitch}}</li>  
+										<li><h4>Pitch</h4>{{serie['Pitch']}}</li>  
 										
-										<li><h4>kVp</h4>{{serie.kvp}}</li>
+										<li><h4>kVp</h4>{{serie['kVp']}}</li>
 																				
-										<li><h4>mA</h4>{{serie.ma}}</li>
+										<li><h4>mA</h4>{{serie['mA']}}</li>
 
-<li><h4>Noise Index</h4>{{serie.noise_index}}</li>				
-										<li><h4>Noise Reduction</h4>{{serie.noise_reduction}}</li>
+										<li><h4>Noise Index</h4>{{serie['Noise Index']}}</li>				
+										<li><h4>Noise Reduction</h4>{{serie['Noise Reduction']}}</li>
 										
-										<li><h4>Rotation Time</h4>{{serie.rotation_time}}</li>
+										<li><h4>Rotation Time</h4>{{serie['Rotation Time']}}</li>
 										
-										<li><h4>Scan FOV</h4>{{serie.scan_fov}}</li>  
+										<li><h4>Scan FOV</h4>{{serie['Scan FOV']}}</li>  
 										
-										<li><h4>Display FOV</h4>{{serie.display_fov}}</li>
-										<li><h4>Scan Delay</h4>{{serie.scan_delay}}</li>
-										<li><h4>Post Processing</h4>{{serie.post_processing}}</li>
+										<li><h4>Display FOV</h4>{{serie['Display FOV']}}</li>
+										<li><h4>Scan Delay</h4>{{serie['Scan Delay']}}</li>
+										<li><h4>Post Processing</h4>{{serie['Post Processing']}}</li>
 										
-										<li><h4>Transfer Images</h4>{{serie.transfer_images}}</li>
+										<li><h4>Transfer Images</h4>{{serie['Transfer Images']}}</li>
 										
-										<li><h4>Notes</h4>{{serie.notes}}</li>  
-										<li><h4>CTDI</h4>{{serie.CTDI}}</li>
+										<li><h4>Notes</h4>{{serie['Notes']}}</li>  
+										<li><h4>CTDI</h4>{{serie['CTDI']}}</li>
 									</ul>
 									<ul class="nav series" ng-show="serie.show && detail_protocol_category[0]=='M'" >																				                                                                                                                                                                                                                                                                    
-										<li><h4>Pulse Sequence</h4>{{serie.pulse_sequence}}</li>
+										<li><h4>Pulse Sequence</h4>{{serie['Pulse Sequence']}}</li>
 										
-										<li><h4>Plane</h4>{{serie.plane}}</li>
+										<li><h4>Plane</h4>{{serie['Plane']}}</li>
                                         										
-										<li><h4>Imaging Mode</h4>{{serie.imaging_mode}}</li>
+										<li><h4>Imaging Mode</h4>{{serie['Imaging Mode']}}</li>
 										
-										<li><h4>Sequence Description</h4>{{serie.sequence_description}}</li>
+										<li><h4>Sequence Description</h4>{{serie['Sequence Description']}}</li>
 										
-										<li><h4>Fov</h4>{{serie.fov}}</li>
+										<li><h4>Localization</h4>{{serie['Localization']}}</li>																				
 										
-										<li><h4>Matrix 1.5t</h4>{{serie.matrix_15t}}</li>
+										<li><h4>FOV</h4>{{serie['FOV']}}</li>
 										
-										<li><h4>Matrix 3t</h4>{{serie.matrix_3t}}</li>
+										<li><h4>MATRIX (1.5T)</h4>{{serie['MATRIX (1.5T)']}}</li>
 										
-										<li><h4>Thk/Space</h4>{{serie.thk_space}}</li>
+										<li><h4>MATRIX (3T)</h4>{{serie['MATRIX (3T)']}}</li>
 										
-										<li><h4>Time</h4>{{serie.time}}</li>    										
+										<li><h4>NEX</h4>{{serie['NEX']}}</li>
+										
+										<li><h4>Bandwidth</h4>{{serie['Bandwidth']}}</li>
+										
+										<li><h4>THK/SPACE</h4>{{serie.THK/SPACE}}</li>
+										
+										<li><h4>Sequence options</h4>{{serie['Sequence options']}}</li>
+										
+										<li><h4>Injection options</h4>{{serie['Injection options']}}</li>
+										
+										<li><h4>Time</h4>{{serie['Time']}}</li>   
+										
 									</ul>
                             <!-- /.nav-second-level -->
 								</li>

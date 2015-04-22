@@ -28,7 +28,7 @@ class Detailed_ajax extends CI_Controller {
 		
 		$protocol_number = mysql_real_escape_string($data->number);			
 		$category=mysql_real_escape_string($data->category);	
-		if ($category[0]=='M' && $category[0]=='R'){
+		if ($category[0]=='M'){
 			$this->load->model('series_mr_model');				
 			$result= $this->series_mr_model->get_list_by_number($protocol_number);	
 		}else{

@@ -5,9 +5,9 @@ class series_ct_model extends CI_Model{
 		parent::__construct();
 	}	
 	
-	function insert_new($data,$id){
-		$sql = 'SELECT * FROM series_ct WHERE `Series`=?';
-		$params = array($id);
+	function insert_new($data,$id,$protocol){
+		$sql = 'SELECT * FROM series_ct WHERE `Series`=? and `Protocol ID`=?';
+		$params = array($id,$protocol);
 		$status = 0;//0: new protocol; 1: modified; 2:no change
 		
         $query = $this->db->query($sql, $params);
@@ -26,11 +26,33 @@ class series_ct_model extends CI_Model{
 			if ($status==1){				   
 				$this->db->insert('series_ct_backup',$query->result_array()[0]);
 				$this->db->where('Series', $id);
+				$this->db->where('Protocol ID', $protocol);
 				$this->db->update('series_ct', $data);        
 			}
         }
         else {            
-			$this->db->insert('series_ct', $data);
+			//$this->db->insert('series_ct', $data);
+			/*foreach($data as $key=>$val)
+			{
+				$this->db->set($key, $val);
+			}
+			$this->db->insert('series_ct');*/
+			$sql = 'INSERT INTO `series_ct` VALUES(?';			
+		
+			$count = count($data);	
+		
+			for ($i = 1; $i < $count; $i++) {   
+				$sql=$sql.", ? ";
+			}
+			$sql=$sql.")";
+		
+			$params = array();
+		
+			foreach($data as $key=>$val){ 			
+				array_push($params,$val);
+			}
+		
+			$query = $this->db->query($sql,$params);
         }		
 		
 		return $status;

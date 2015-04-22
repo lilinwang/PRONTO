@@ -33,8 +33,7 @@
 		$scope.export_protocols=[];	
 		$scope.categories=[];
 		
-		$scope.construct_categories=function(){
-			//console.log("WLL");
+		$scope.construct_categories=function(){			
 			$http({
 				url: 'ajax/get_category',
 				method: "POST",
@@ -151,7 +150,7 @@
 		};
 		this.tab='Home';
 		this.selectprotocols=function(category_data){
-			console.log(category_data);
+			//console.log(category_data);
 			this.select('Protocols');
 			//this.tab='Protocols';			
 			$http({
@@ -159,7 +158,7 @@
 				method: "POST",
 				data : {category:category_data}
 			}).success(function (data) {
-				console.log(data);
+				//console.log(data);
 				if (angular.isObject(data)){					
 					$scope.protocols=data.slice(0);
 				}
@@ -180,7 +179,7 @@
 				method: "POST",
 				data : {}
 			}).success(function (data) {
-				console.log(data);
+				//console.log(data);
 				if (angular.isObject(data)){					
 					$scope.protocols=data.slice(0);
 				}
@@ -279,7 +278,7 @@
 				function (data) {
 				console.log(data);				
 			});				
-			
+			console.log(protocol_category);
 			$http({
 				url: 'detailed_ajax/get_series',
 				method: "POST",
@@ -394,9 +393,6 @@
 			});			
 		}
 	}]);		
-	
-	
-	
 	
 	var base_url="radiology";
 	

@@ -122,8 +122,26 @@ class protocol_model extends CI_Model{
 				$this->db->update('protocol', $data);  
 			}					
         }
-        else {            
-			$this->db->insert('protocol', $data);	
+        else {  
+			$sql = 'INSERT INTO `protocol` VALUES(?';			
+		
+			$count = count($data);	
+		
+			for ($i = 1; $i < $count; $i++) {   
+				$sql=$sql.", ? ";
+			}
+			$sql=$sql.")";
+		
+			$params = array();
+		
+			foreach($data as $key=>$val){ 			
+				array_push($params,$val);
+			}
+		
+			$query = $this->db->query($sql,$params);
+        
+			//$this->db->insert('protocol');
+			//$this->db->insert('protocol', $data);	
 			
         }		
 		

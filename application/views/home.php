@@ -461,23 +461,34 @@
 										<li><h4>CTDI</h4>{{serie['CTDI']}}</li>
 									</ul>
 									<ul class="nav series" ng-show="serie.show && detail_protocol_category[0]=='M'" >																				                                                                                                                                                                                                                                                                    
-										<li><h4>Pulse Sequence</h4>{{serie.pulse_sequence}}</li>
+										<li><h4>Pulse Sequence</h4>{{serie['Pulse Sequence']}}</li>
 										
-										<li><h4>Plane</h4>{{serie.plane}}</li>
+										<li><h4>Plane</h4>{{serie['Plane']}}</li>
                                         										
-										<li><h4>Imaging Mode</h4>{{serie.imaging_mode}}</li>
+										<li><h4>Imaging Mode</h4>{{serie['Imaging Mode']}}</li>
 										
-										<li><h4>Sequence Description</h4>{{serie.sequence_description}}</li>
+										<li><h4>Sequence Description</h4>{{serie['Sequence Description']}}</li>
 										
-										<li><h4>Fov</h4>{{serie.fov}}</li>
+										<li><h4>Localization</h4>{{serie['Localization']}}</li>																				
 										
-										<li><h4>Matrix 1.5t</h4>{{serie.matrix_15t}}</li>
+										<li><h4>FOV</h4>{{serie['FOV']}}</li>
 										
-										<li><h4>Matrix 3t</h4>{{serie.matrix_3t}}</li>
+										<li><h4>MATRIX (1.5T)</h4>{{serie['MATRIX (1.5T)']}}</li>
 										
-										<li><h4>Thk/Space</h4>{{serie.thk_space}}</li>
+										<li><h4>MATRIX (3T)</h4>{{serie['MATRIX (3T)']}}</li>
 										
-										<li><h4>Time</h4>{{serie.time}}</li>    										
+										<li><h4>NEX</h4>{{serie['NEX']}}</li>
+										
+										<li><h4>Bandwidth</h4>{{serie['Bandwidth']}}</li>
+										
+										<li><h4>THK/SPACE</h4>{{serie.THK/SPACE}}</li>
+										
+										<li><h4>Sequence options</h4>{{serie['Sequence options']}}</li>
+										
+										<li><h4>Injection options</h4>{{serie['Injection options']}}</li>
+										
+										<li><h4>Time</h4>{{serie['Time']}}</li>   
+										
 									</ul>
                             <!-- /.nav-second-level -->
 								</li>
@@ -555,8 +566,8 @@
 									<tbody>										 																			
                                         <tr class="odd gradeX" dir-paginate="record in records | filter:q | itemsPerPage: pageSize" current-page="currentPage" >												
 											<td>{{record.status}}</td>
-                                            <td>{{record.protocol_number}}</td>											
-                                            <td>{{record.protocol_name}}</td>
+                                            <td>{{record['Protocol ID']}}</td>											
+                                            <td>{{record['Protocol Name']}}</td>
                                             <td>{{record.created_by}}</td>
 											<td>{{record.created_at}}</td>                                                                                    							
                                         </tr>                                       
