@@ -116,52 +116,77 @@ class protocol_model extends CI_Model{
 				}
 			}
 			
-			if ($status==1){				
-				$this->db->insert('protocol_backup',$query->result_array()[0]);
+			if ($status==1){	
+				$this->backup_protocol($query->result_array()[0]);
+				$this->delete_protocol($id);
+				$this->insert_protocol($data);
+				/*$this->db->insert('protocol_backup',$query->result_array()[0]);
 				$this->db->where('Protocol ID', $id);
-				$this->db->update('protocol', $data);  
+				$this->db->update('protocol', $data);  */
 			}					
         }
         else {  
-			$sql = 'INSERT INTO `protocol` VALUES(?';			
-		
-			$count = count($data);	
-		
-			for ($i = 1; $i < $count; $i++) {   
-				$sql=$sql.", ? ";
-			}
-			$sql=$sql.")";
-		
-			$params = array();
-		
-			foreach($data as $key=>$val){ 			
-				array_push($params,$val);
-			}
-		
-			$query = $this->db->query($sql,$params);
-        
-			//$this->db->insert('protocol');
-			//$this->db->insert('protocol', $data);	
-			
+			$this->insert_protocol('protocol',$data);        			
+			//$this->db->insert('protocol', $data);			
         }		
 		
 		$this->record($id,$data['Protocol Name'],$user_name,$status);
 		return $status;
 	}	
+	private function insert_protocol($data){
+		$sql = 'INSERT INTO `protocol` VALUES(?';			
+		
+		$count = count($data);	
+		
+		for ($i = 1; $i < $count; $i++) {   
+			$sql=$sql.", ? ";
+		}
+		$sql=$sql.")";
+		
+		$params = array();
+		
+		foreach($data as $key=>$val){ 			
+			array_push($params,$val);
+		}
+		
+		$query = $this->db->query($sql,$params);
+	}
+	
+	private function backup_protocol($data){
+		$sql = 'INSERT INTO `protocol_backup` VALUES(?';					
+		$count = count($data);	
+		
+		for ($i = 1; $i < $count; $i++) {   
+			$sql=$sql.", ? ";
+		}
+		$sql=$sql.")";
+		
+		$params = array();
+		
+		foreach($data as $key=>$val){ 			
+			array_push($params,$val);
+		}
+		
+		$query = $this->db->query($sql,$params);
+	}
 	
 	function delete_by_number($protocol_number,$user_name){
 		$sql = 'SELECT * FROM protocol WHERE `Protocol ID`=?';
 		$params = array($protocol_number);
 		$query = $this->db->query($sql, $params);
         if ($query->num_rows() > 0) {
-			$this->db->insert('protocol_backup',$query->result_array()[0]);//backup
+			$this->backup_protocol($query->result_array()[0]);
+			//$this->db->insert('protocol_backup',$query->result_array()[0]);//backup
 			$this->record($protocol_number,$query->result_array()[0]['Protocol Name'],$user_name,3);//record
 		}
 		
-		$sql = 'DELETE FROM protocol WHERE `Protocol ID`=?';
-		$params = array($protocol_number);
-		
-        $query = $this->db->query($sql, $params);
+		$this->delete_protocol($protocol_number);
 	}	
+	
+	private function delete_protocol($protocol_number){
+		$sql = 'DELETE FROM protocol WHERE `Protocol ID`=?';
+		$params = array($protocol_number);		
+        $query = $this->db->query($sql, $params);
+	}
 	
 }

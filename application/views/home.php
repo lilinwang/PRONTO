@@ -157,7 +157,7 @@
                     <ul class="nav" id="side-menu">
 						<li>
 							<a href ng-click="panel.selectAllProtocols()" >protocols</a>
-						</li>
+						</li>						
                         <li class="sidebar-search">
                             <div class="input-group custom-search-form">
                                 <input type="text" ng-model="search_key" ng-keyup="$event.keyCode == 13 && panel.searchprotocols()" class="form-control" placeholder="Search...">
@@ -338,7 +338,7 @@
                                             <th>Protocol Name</th>
 											<th>Protocol Category</th>
 											<th>Indications</th>		
-											<th>Permalink</th>
+											
 										</tr>
                                     </thead>
                                     <tbody>										 																			
@@ -346,7 +346,6 @@
                                             <td ng-click="panel.showDetailedProtocol(protocol['Protocol ID'],protocol['Protocol Category'])" style="cursor: pointer">{{protocol['Protocol Name']}}</td>
 											<td ng-click="panel.showDetailedProtocol(protocol['Protocol ID'],protocol['Protocol Category'])" style="cursor: pointer">{{protocol['Protocol Category']}}</td>                                            											
 											<td ng-click="panel.showDetailedProtocol(protocol['Protocol ID'],protocol['Protocol Category'])" style="cursor: pointer">{{protocol['Indications']}}</td>
-                                            <td><a target="_blank" href="mylist?protocolID={{protocol['Protocol ID']}}&Category={{protocol['Protocol Category']}}"><?php echo base_url();?>mylist?protocolID={{protocol['Protocol ID']}}&Category={{protocol['Protocol Category']}}</a></td>                          								
                                         </tr>                                       
                                     </tbody>
                                 </table>
@@ -387,14 +386,16 @@
                                         <tr>
 											<th>protocol Name</th>
 											<th>protocol Category</th>
-											<th>Indication</th>									
+											<th>Indication</th>	
+											<th>Permalink</th>
 										</tr>
                                     </thead>
                                     <tbody>										 																			
                                         <tr class="odd gradeX" ng-repeat="protocol in protocols">										
 											<td>{{protocol['Protocol Name']}}</td>
 											<td>{{protocol['Protocol Category']}}</td>                                            											
-											<td>{{protocol['Indications']}}</td>                                          									 
+											<td>{{protocol['Indications']}}</td>  
+											<td><a target="_blank" href="mylist?protocolID={{protocol['Protocol ID']}}&Category={{protocol['Protocol Category']}}"><?php echo base_url();?>mylist?protocolID={{protocol['Protocol ID']}}&Category={{protocol['Protocol Category']}}</a></td>                          								                                       
                                         </tr>                                       
                                     </tbody>
                                 </table>
@@ -410,6 +411,9 @@
 						<p style="font-size:20px">Series
 							<span class="btn btn-default" ng-click="panel.showAllSeries(this)" type="button">
 								{{all_series_button}}
+							</span>
+							<span class="btn btn-default" ng-click="panel.goBack()" type="button">
+								<< Go Back
 							</span>
 						<p>
 							<ul class="nav" >                                                                                            									 
@@ -481,7 +485,7 @@
 										
 										<li><h4>Bandwidth</h4>{{serie['Bandwidth']}}</li>
 										
-										<li><h4>THK/SPACE</h4>{{serie.THK/SPACE}}</li>
+										<li><h4>THK/SPACE</h4>{{serie['THK/SPACE']}}</li>
 										
 										<li><h4>Sequence options</h4>{{serie['Sequence options']}}</li>
 										

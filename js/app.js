@@ -6,7 +6,8 @@
 		};	
 	}]);
 	
-	app.controller("PanelController", ['$http','$scope',function($http,$scope){
+	app.controller("PanelController", ['$http','$scope','$rootScope','$window',function($http,$scope,$rootScope,$window){		
+		
 		$scope.currentPage = 1;
 		$scope.pageSize = 10;
 		$scope.pageChangeHandler = function(num) {
@@ -94,6 +95,7 @@
 				});	
 			}
 		};
+		
 		$scope.export_data=function(modal){
 			var category=[];
 			$scope.export_protocols=[];	
@@ -171,6 +173,9 @@
 			}).error(function (data) {
 				console.log(data);				
 			});
+		};
+		this.goBack=function(){			
+			this.selectprotocols($scope.detail_protocol_category);
 		};
 		this.selectAllProtocols=function(){			
 			this.select('Protocols');		
