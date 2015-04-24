@@ -139,7 +139,7 @@ class Ajax extends CI_Controller {
         $file_path = $dest;
 		
 		$this->load->model('protocol_model');
-		$this->load->model('category_model');
+		//$this->load->model('category_model');
 		
         if ($this->csvimport->get_array($file_path)) {
 			$csv_array = $this->csvimport->get_array($file_path);
@@ -156,7 +156,7 @@ class Ajax extends CI_Controller {
 				if ($row['Protocol ID']==NULL) break;	
 				
 				$protocol_status=$this->protocol_model->insert_new($protocol_data,$row['Protocol ID'],$user_name);
-				$this->category_model->check($row['Protocol Category']);
+				//$this->category_model->insert_new($row['Protocol Category']);
 				array_push($imported_protocols[0], $row['Protocol ID']);   
 				array_push($imported_protocols[1], $row['Protocol Name']);				
 				

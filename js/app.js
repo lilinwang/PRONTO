@@ -372,6 +372,34 @@
 				this.showHistory();
 			}
 		};	
+		this.deleteAllProtocol=function(){			
+			var contro=$(this);			
+			bootbox.prompt("Password:", function(result) {                
+				if (result === null) {                                             
+					$('#result').html("Prompt dismissed!");                              
+				} else {
+					$http({
+						url: 'detailed_ajax/delete_all',
+						method: "POST",
+						data : {password:result}
+					}).success(function (data) {
+					console.log(data);
+						if (data==="1"){
+							//contro[0].selectprotocols($scope.detail_protocol_category);
+							contro[0].construct_categories();
+							if (contro[0].tab==="Protocols"){
+								contro[0].select('Home');	
+							}
+							//$('#result').html("Delete success!"); 
+						}else{
+							$('#result').html("Wrong password!");
+						}			
+					}).error(function (data) {
+						console.log(data);				
+					});				        
+				}
+			});			
+		};
 		this.deleteprotocol=function(){			
 			var contro=$(this);			
 			bootbox.prompt("Password:", function(result) {                
@@ -386,7 +414,8 @@
 					}).success(function (data) {
 					console.log(data);
 						if (data==="1"){
-							contro[0].selectprotocols($scope.detail_protocol_category);
+							contro[0].construct_categories();
+							contro[0].selectprotocols($scope.detail_protocol_category);							
 							//$('#result').html("Delete success!"); 
 						}else{
 							$('#result').html("Wrong password!");
@@ -396,7 +425,7 @@
 					});				        
 				}
 			});			
-		}
+		};
 	}]);		
 	
 	var base_url="radiology";

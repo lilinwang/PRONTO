@@ -54,9 +54,24 @@ class Detailed_ajax extends CI_Controller {
 			}else{
 				$this->load->model('series_ct_model');				
 				$this->series_ct_model->delete_by_number($protocol_number);	
-			}
-									
+			}											
+			echo 1;
+		}else{
+			echo 0;
+		}		
+	}
+	function delete_all(){
+		$data = json_decode(file_get_contents("php://input"));
 		
+		$user_name=$this->session->userdata('user_name');					
+		$password = mysql_real_escape_string($data->password);			
+		if ($password=="cornellradiology"){
+			$this->load->model('protocol_model');				
+			$this->protocol_model->delete_all($user_name);										
+			$this->load->model('series_mr_model');				
+			$this->series_mr_model->delete_all();	
+			$this->load->model('series_ct_model');				
+			$this->series_ct_model->delete_all();															
 			echo 1;
 		}else{
 			echo 0;

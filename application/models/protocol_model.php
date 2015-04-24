@@ -117,16 +117,18 @@ class protocol_model extends CI_Model{
 			}
 			
 			if ($status==1){	
-				$this->backup_protocol($query->result_array()[0]);
+				$this->backup($query->result_array()[0]);
 				$this->delete_protocol($id);
 				$this->insert_protocol($data);
+				$this->insert_new_category($data['Protocol Category']);
 				/*$this->db->insert('protocol_backup',$query->result_array()[0]);
 				$this->db->where('Protocol ID', $id);
 				$this->db->update('protocol', $data);  */
 			}					
         }
         else {  
-			$this->insert_protocol('protocol',$data);        			
+			$this->insert_new_category($data['Protocol Category']);
+			$this->insert_protocol($data);        			
 			//$this->db->insert('protocol', $data);			
         }		
 		
@@ -152,7 +154,7 @@ class protocol_model extends CI_Model{
 		$query = $this->db->query($sql,$params);
 	}
 	
-	private function backup_protocol($data){
+	private function backup($data){
 		$sql = 'INSERT INTO `protocol_backup` VALUES(?';					
 		$count = count($data);	
 		
@@ -175,18 +177,83 @@ class protocol_model extends CI_Model{
 		$params = array($protocol_number);
 		$query = $this->db->query($sql, $params);
         if ($query->num_rows() > 0) {
-			$this->backup_protocol($query->result_array()[0]);
+			$this->backup($query->result_array()[0]);
 			//$this->db->insert('protocol_backup',$query->result_array()[0]);//backup
 			$this->record($protocol_number,$query->result_array()[0]['Protocol Name'],$user_name,3);//record
-		}
-		
-		$this->delete_protocol($protocol_number);
+			$this->delete_protocol($protocol_number);
+			$this->delete_category($query->result_array()[0]['Protocol Category']);
+		}				
 	}	
-	
+	function delete_all($user_name){
+		$sql = 'SELECT * FROM protocol';		
+		$query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+			foreach($query->result_array() as $data){
+				$this->backup($data);
+				$this->record($data['Protocol ID'],$data['Protocol Name'],$user_name,3);//record				
+			}
+		}			
+		
+		$sql = 'DELETE FROM protocol WHERE 1';
+		$query = $this->db->query($sql);	
+
+		$sql = 'DELETE FROM category WHERE 1';
+		$query = $this->db->query($sql);	
+	}
 	private function delete_protocol($protocol_number){
 		$sql = 'DELETE FROM protocol WHERE `Protocol ID`=?';
 		$params = array($protocol_number);		
-        $query = $this->db->query($sql, $params);
+        $query = $this->db->query($sql, $params);				
+	}
+	private function delete_category($data){
+		$arr = explode("-", $data);
+		$count = count($arr);
+		$tmp = $arr[0];
+		$sql = "SELECT * FROM protocol WHERE `Protocol Category` LIKE ?";
+		$query = $this->db->query($sql,$tmp."%");
+		if ($query->num_rows() == 0){
+			$q = "DELETE FROM category WHERE `name` = ?";
+			$this->db->query($q,$tmp);
+		};
+		
+		for ($i=1;$i<$count;$i++){	
+			$tmp = $tmp."-".$arr[$i];
+			$sql = "SELECT * FROM protocol WHERE `Protocol Category` = ?";
+			$query = $this->db->query($sql,$tmp);
+			if ($query->num_rows() == 0){
+				$q = "DELETE FROM category WHERE `name` = ?";
+				$this->db->query($q,$tmp);
+			};
+		}
 	}
 	
+	private function insert_new_category($data)
+	{			
+		$arr=explode("-", $data);
+		$count=count($arr)-1;
+		$sql = "SELECT * from category WHERE name=?";
+		$query = $this->db->query($sql,$data);
+		
+        if ($query->num_rows() == 0) {
+			$sql = "INSERT INTO category(`name`,`show_name`,`level`) VALUES (?,?,?)";
+			
+			$show_name=$arr[$count];
+			
+			$this->db->query($sql,array($data,$show_name,$count));
+			
+			$tmp = $arr[0];
+			for ($i=0;$i<$count;$i++){			
+				$sql = "SELECT * from category WHERE name=?";
+				$q = $this->db->query($sql,$tmp);
+				if ($q->num_rows()==0){
+					$sql = "INSERT INTO category(`name`,`show_name`) VALUES (?,?)";
+					
+					$show_name=$arr[$i];
+					$this->db->query($sql,array($tmp,$show_name,$i));
+				}
+				$tmp=$tmp+'-'+$arr[$i];
+			}
+            return null;
+        }
+	}	
 }
