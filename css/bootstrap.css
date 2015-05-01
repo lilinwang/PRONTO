@@ -2126,8 +2126,8 @@ th {
 .table-striped > tbody > tr:nth-child(odd) {
   background-color: #f9f9f9;
 }
-.table-hover > tbody > tr:hover {
-  background-color: #f5f5f5;
+tr.odd.gradeX.showmore.ng-scope:hover{
+  background-color: #66ccff;
 }
 table col[class*="col-"] {
   position: static;

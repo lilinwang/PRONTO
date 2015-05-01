@@ -58,7 +58,7 @@ class series_mr_model extends CI_Model{
 		$query = $this->db->query($sql,$params);
 	}
 	function get_list_by_number($protocol_number){
-		$sql = 'SELECT * FROM series_mr WHERE `Protocol ID`=?';
+		$sql = 'SELECT * FROM series_mr WHERE `Protocol ID`=? ORDER BY `Series`';
 		$params = array($protocol_number);
 		
         $query = $this->db->query($sql, $params);

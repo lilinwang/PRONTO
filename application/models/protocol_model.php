@@ -218,8 +218,8 @@ class protocol_model extends CI_Model{
 		
 		for ($i=1;$i<$count;$i++){	
 			$tmp = $tmp."-".$arr[$i];
-			$sql = "SELECT * FROM protocol WHERE `Protocol Category` = ?";
-			$query = $this->db->query($sql,$tmp);
+			$sql = "SELECT * FROM protocol WHERE `Protocol Category` LIKE ?";
+			$query = $this->db->query($sql,$tmp."%");
 			if ($query->num_rows() == 0){
 				$q = "DELETE FROM category WHERE `name` = ?";
 				$this->db->query($q,$tmp);
@@ -246,12 +246,12 @@ class protocol_model extends CI_Model{
 				$sql = "SELECT * from category WHERE name=?";
 				$q = $this->db->query($sql,$tmp);
 				if ($q->num_rows()==0){
-					$sql = "INSERT INTO category(`name`,`show_name`) VALUES (?,?)";
+					$sql = "INSERT INTO category(`name`,`show_name`,`level`) VALUES (?,?,?)";
 					
 					$show_name=$arr[$i];
 					$this->db->query($sql,array($tmp,$show_name,$i));
 				}
-				$tmp=$tmp+'-'+$arr[$i];
+				$tmp=$tmp.'-'.$arr[$i+1];
 			}
             return null;
         }

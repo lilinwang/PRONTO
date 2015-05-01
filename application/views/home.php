@@ -341,10 +341,10 @@
 										</tr>
                                     </thead>
                                     <tbody>										 																			
-                                        <tr class="odd gradeX" ng-repeat="protocol in protocols" >											
-                                            <td ng-click="panel.showDetailedProtocol(protocol['Protocol ID'],protocol['Protocol Category'])" style="cursor: pointer">{{protocol['Protocol Name']}}</td>
-											<td ng-click="panel.showDetailedProtocol(protocol['Protocol ID'],protocol['Protocol Category'])" style="cursor: pointer">{{protocol['Protocol Category']}}</td>                                            											
-											<td ng-click="panel.showDetailedProtocol(protocol['Protocol ID'],protocol['Protocol Category'])" style="cursor: pointer">{{protocol['Indications']}}</td>
+                                        <tr class="odd gradeX showmore" ng-repeat="protocol in protocols" >											
+                                            <td style="cursor: pointer" ng-click="panel.showDetailedProtocol(protocol['Protocol ID'],protocol['Protocol Category'])" >{{protocol['Protocol Name']}}</td>
+											<td style="cursor: pointer" ng-click="panel.showDetailedProtocol(protocol['Protocol ID'],protocol['Protocol Category'])" >{{protocol['Protocol Category']}}</td>                                            											
+											<td style="cursor: pointer" ng-click="panel.showDetailedProtocol(protocol['Protocol ID'],protocol['Protocol Category'])" >{{protocol['Indications']}}</td>
                                         </tr>                                       
                                     </tbody>
                                 </table>
@@ -419,7 +419,7 @@
 								<li ng-repeat="serie in series">
 									<a style="font-size:18px" ng-click="panel.showSeries(serie)"> {{serie['Series']}}<span class="fa arrow"></span></a>									
 									<ul class="nav series" ng-show="serie.show && detail_protocol_category[0]=='C'" >																				                                                                                                                                                                                                                                                                    
-										<li><h4>Patient Orientation</h4>{{serie['Patient Orientation']}}</li>																				
+										<li><h4>Orientation</h4>{{serie['Orientation']}}</li>																				
                                         										
 										<li><h4>Intravenous Contrast</h4>{{serie['Intravenous Contrast']}}</li>
 										<li><h4>Oral Contrast</h4>{{serie['Oral Contrast']}}</li>	
