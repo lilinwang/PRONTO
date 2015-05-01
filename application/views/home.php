@@ -404,7 +404,33 @@
 						
                         <!-- /.panel-body -->
                     </div>
-                    
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Series
+                        </div>
+						
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="table-responsive">
+								<table class="table table-striped table-bordered table-hover" id="dataTables-detailed">
+                                    <thead>
+                                        <tr>
+											<th>Series Name</th>
+											
+										</tr>
+                                    </thead>
+                                    <tbody>										 																			
+                                        <tr class="odd gradeX" ng-repeat="serie in series">										
+											<td>{{serie['Series']}}</td>											    								                                    
+                                        </tr>                                       
+                                    </tbody>
+                                </table>
+								</div>
+                            <!-- /.table-responsive -->                           
+                        </div>
+						
+                        <!-- /.panel-body -->
+                    </div>
 						
 					<div class="panel-body">					
 						<p style="font-size:20px">Series
